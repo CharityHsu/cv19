@@ -31,10 +31,27 @@ class PopupView: UIView {
         return button
     }()
     
+    let countryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.text = "test"
+        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let totalCasesLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        // label.text = country
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let totalDeathsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -43,24 +60,38 @@ class PopupView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         
+        backgroundColor = .white
+        addSubviews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addSubviews() {
         addSubview(button)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
         button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12).isActive = true
         button.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
         
-        addSubview(totalCasesLabel)
-        totalCasesLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        totalCasesLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
-        totalCasesLabel.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -12).isActive = true
-        totalCasesLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+        addSubview(countryLabel)
+        countryLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        countryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
         
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        addSubview(totalCasesLabel)
+        totalCasesLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        totalCasesLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 30).isActive = true
+        
+        addSubview(totalDeathsLabel)
+        totalDeathsLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        totalDeathsLabel.topAnchor.constraint(equalTo: totalCasesLabel.bottomAnchor, constant: 12).isActive = true
+        
+        
+
+        
+       
     }
     
     // MARK: - Selectors

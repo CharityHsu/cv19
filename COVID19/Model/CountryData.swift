@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+struct CountryData: Codable {
+    let Country: String
+    let CountryCode: String
+    let TotalConfirmed: Int
+    let TotalDeaths: Int
+}

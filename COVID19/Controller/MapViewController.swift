@@ -11,7 +11,11 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
+    // MARK: - Outlets
+    
     @IBOutlet weak var mapView: MKMapView!
+    
+    // MARK: - Variables and Properties
     
     lazy var popupView: PopupView = {
         let view = PopupView()
@@ -20,17 +24,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         view.delegate = self
         return view
     }()
-    
-    let visualEffectView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
-        let view = UIVisualEffectView(effect: blurEffect)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+
+    // MARK: - Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +38,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView.addGestureRecognizer(gestureRecognizer)
     }
     
+    // MARK: - Selectors
+    
     @objc func triggerTouchAction(gestureRecognizer: UITapGestureRecognizer) {
         
         let location = gestureRecognizer.location(in: mapView)
@@ -48,9 +48,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         convertLatLongToAddress(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
     
+    // MARK: - Methods
+    
     func convertLatLongToAddress(latitude: Double, longitude: Double) {
         
-        var tappedCountry: String?
         let geoCoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
@@ -59,21 +60,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             var placeMark: CLPlacemark!
             placeMark = placemarks?[0]
             
-//             Country code
             if let iso = placeMark.isoCountryCode {
                 print(iso)
+                
+                
+                
+                self.displayPopup(tappedCountryCode: iso)
             }
-            
-            // Country
-            if let country = placeMark.country {
-                tappedCountry = country
-            }
+
         })
-        
-        displayPopup(country: tappedCountry)
     }
     
-    func displayPopup(country: String?) {
+    func displayPopup(tappedCountryCode: String) {
         
         view.addSubview(popupView)
         popupView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -83,15 +81,25 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         popupView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         popupView.alpha = 0
-        
-        if let country = country {
-            popupView.country = country
-        }
-        
+
         UIView.animate(withDuration: 0.2) {
-            self.visualEffectView.alpha = 1
             self.popupView.alpha = 1
             self.popupView.transform = CGAffineTransform.identity
+        }
+        
+        Network.getData(from: Constants.url) { (result) in
+            DispatchQueue.main.async {
+                
+                for country in result.Countries {
+                    if country.CountryCode == tappedCountryCode {
+                        self.popupView.countryLabel.text = country.Country
+                        self.popupView.totalCasesLabel.text = "Total Confirmed: \(country.TotalConfirmed.withCommas())"
+                        self.popupView.totalDeathsLabel.text = "Total Deaths: \(country.TotalDeaths.withCommas())"
+                    }
+                }
+                
+                
+            }
         }
     }
 }
@@ -101,7 +109,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 extension MapViewController: PopupDelegate {
     func dismiss() {
         UIView.animate(withDuration: 0.2, animations: {
-            self.visualEffectView.alpha = 0
             self.popupView.alpha = 0
             self.popupView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         }) { (_) in
