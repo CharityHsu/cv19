@@ -63,15 +63,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if let iso = placeMark.isoCountryCode {
                 print(iso)
                 
-                
-                
-                self.displayPopup(tappedCountryCode: iso)
+                Network.getData(from: Constants.url) { (result) in
+                    DispatchQueue.main.async {
+                        for country in result.Countries {
+                            if country.CountryCode == iso {
+                                self.displayPopup(countryName: country.Country, totalConfirmed: country.TotalConfirmed, totalDeaths: country.TotalDeaths, newConfirmed: country.NewConfirmed, newDeaths: country.NewDeaths)
+                            }
+                        }
+                    }
+                }
             }
 
         })
     }
     
-    func displayPopup(tappedCountryCode: String) {
+    func displayPopup(countryName: String, totalConfirmed: Int, totalDeaths: Int, newConfirmed: Int, newDeaths: Int) {
         
         view.addSubview(popupView)
         popupView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -87,20 +93,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             self.popupView.transform = CGAffineTransform.identity
         }
         
-        Network.getData(from: Constants.url) { (result) in
-            DispatchQueue.main.async {
-                
-                for country in result.Countries {
-                    if country.CountryCode == tappedCountryCode {
-                        self.popupView.countryLabel.text = country.Country
-                        self.popupView.totalCasesLabel.text = "Total Confirmed: \(country.TotalConfirmed.withCommas())"
-                        self.popupView.totalDeathsLabel.text = "Total Deaths: \(country.TotalDeaths.withCommas())"
-                    }
-                }
-                
-                
-            }
-        }
+        popupView.countryLabel.text = countryName
+        popupView.totalCasesLabel.text = "Total Confirmed: \(totalConfirmed.withCommas())"
+        popupView.totalDeathsLabel.text = "Total Deaths: \(totalDeaths.withCommas())"
+        popupView.newCasesLabel.text = "New Confirmed: \(newConfirmed.withCommas())"
+        popupView.newDeathsLabel.text = "New Deaths: \(newDeaths.withCommas())"
     }
 }
 

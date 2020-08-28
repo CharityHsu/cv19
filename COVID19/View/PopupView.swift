@@ -25,6 +25,7 @@ class PopupView: UIView {
         button.backgroundColor = .systemBlue
         button.setTitle("OK", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        
         button.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 5
@@ -33,7 +34,7 @@ class PopupView: UIView {
     
     let countryLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .label
         label.text = "test"
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +43,7 @@ class PopupView: UIView {
     
     let totalCasesLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -50,7 +51,23 @@ class PopupView: UIView {
     
     let totalDeathsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let newCasesLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let newDeathsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -61,7 +78,7 @@ class PopupView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         addSubviews()
     }
     
@@ -88,8 +105,14 @@ class PopupView: UIView {
         totalDeathsLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         totalDeathsLabel.topAnchor.constraint(equalTo: totalCasesLabel.bottomAnchor, constant: 12).isActive = true
         
+        addSubview(newCasesLabel)
+        newCasesLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        newCasesLabel.topAnchor.constraint(equalTo: totalDeathsLabel.bottomAnchor, constant: 30).isActive = true
         
-
+        addSubview(newDeathsLabel)
+        newDeathsLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        newDeathsLabel.topAnchor.constraint(equalTo: newCasesLabel.bottomAnchor, constant: 12).isActive = true
+        
         
        
     }

@@ -15,6 +15,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var iconBackgroundView: UIView!
     @IBOutlet weak var totalCasesLabel: UILabel!
     @IBOutlet weak var totalDeathsLabel: UILabel!
     @IBOutlet weak var totalRecoveredLabel: UILabel!
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         backgroundView.layer.cornerRadius = 10.0
+        iconBackgroundView.layer.cornerRadius = 10.0
         learnMoreButton.layer.cornerRadius = 8.0
         
         Network.getData(from: Constants.url) { (result) in
@@ -42,7 +44,6 @@ class ViewController: UIViewController {
     // MARK: - Methods
     
     private func displayDateData(response: Response) {
-        
         let dateFormatter = DateFormatter()
         let dateFormatterTwo = DateFormatter()
         
@@ -56,25 +57,21 @@ class ViewController: UIViewController {
         let date = dateFormatter.date(from: dateString)
         titleLabel.text = dateFormatterTwo.string(from: date ?? Date())
         titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        
-        
     }
     
     private func displayGlobalData(response: Response) {
-
         totalCasesLabel.text = response.Global.TotalConfirmed.withCommas()
         newCasesLabel.text = response.Global.NewConfirmed.withCommas()
         totalDeathsLabel.text = response.Global.TotalDeaths.withCommas()
         newDeathsLabel.text = response.Global.NewDeaths.withCommas()
         totalRecoveredLabel.text = response.Global.TotalRecovered.withCommas()
         newRecoveredLabel.text = response.Global.NewRecovered.withCommas()
-
     }
     
     // MARK: - Actions
     
     @IBAction func learnMoreButtonTapped(_ sender: UIButton) {
-        guard let url = URL(string: "https://www.cdc.gov/coronavirus/2019-ncov/index.html") else {
+        guard let url = URL(string: "https://www.coronavirus.gov/") else {
             return
         }
         let vc = SFSafariViewController(url: url)
