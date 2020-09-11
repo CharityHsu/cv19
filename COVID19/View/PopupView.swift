@@ -95,7 +95,7 @@ class PopupView: UIView {
         
         addSubview(countryLabel)
         countryLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        countryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        countryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
         
         addSubview(totalCasesLabel)
         totalCasesLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

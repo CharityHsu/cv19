@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct GlobalData: Codable {
-    let NewConfirmed: Int
-    let TotalConfirmed: Int
-    let NewDeaths: Int
-    let TotalDeaths: Int
-    let NewRecovered: Int
-    let TotalRecovered: Int
-}
+//struct GlobalData: Codable {
+//    let NewConfirmed: Int
+//    let TotalConfirmed: Int
+//    let NewDeaths: Int
+//    let TotalDeaths: Int
+//    let NewRecovered: Int
+//    let TotalRecovered: Int
+//}

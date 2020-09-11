@@ -13,25 +13,28 @@ class ViewController: UIViewController {
     
     // MARK: - Outlets
 
+    @IBOutlet var backgroundViews: [UIView]!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var backgroundView: UIView!
-    @IBOutlet weak var iconBackgroundView: UIView!
     @IBOutlet weak var totalCasesLabel: UILabel!
     @IBOutlet weak var totalDeathsLabel: UILabel!
     @IBOutlet weak var totalRecoveredLabel: UILabel!
     @IBOutlet weak var newCasesLabel: UILabel!
     @IBOutlet weak var newDeathsLabel: UILabel!
     @IBOutlet weak var newRecoveredLabel: UILabel!
-    @IBOutlet weak var learnMoreButton: UIButton!
+//    @IBOutlet weak var learnMoreButton: UIButton!
    
     // MARK: - Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backgroundView.layer.cornerRadius = 10.0
-        iconBackgroundView.layer.cornerRadius = 10.0
-        learnMoreButton.layer.cornerRadius = 8.0
+        backgroundViews.forEach({
+            $0.layer.cornerRadius = 16.0
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.2
+            $0.layer.shadowOffset = CGSize(width: 0, height: 1.5)
+            $0.layer.shadowRadius = 4.0
+        })
         
         Network.getData(from: Constants.url) { (result) in
             DispatchQueue.main.async {
@@ -56,7 +59,6 @@ class ViewController: UIViewController {
         let dateString = response.Date
         let date = dateFormatter.date(from: dateString)
         titleLabel.text = dateFormatterTwo.string(from: date ?? Date())
-        titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
     }
     
     private func displayGlobalData(response: Response) {
@@ -70,13 +72,13 @@ class ViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func learnMoreButtonTapped(_ sender: UIButton) {
-        guard let url = URL(string: "https://www.coronavirus.gov/") else {
-            return
-        }
-        let vc = SFSafariViewController(url: url)
-        present(vc, animated: true)
-    }
+//    @IBAction func learnMoreButtonTapped(_ sender: UIButton) {
+//        guard let url = URL(string: "https://www.coronavirus.gov/") else {
+//            return
+//        }
+//        let vc = SFSafariViewController(url: url)
+//        present(vc, animated: true)
+//    }
 
 }
 

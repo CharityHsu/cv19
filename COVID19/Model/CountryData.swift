@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct CountryData: Codable {
-    let Country: String
-    let CountryCode: String
-    let NewConfirmed: Int
-    let TotalConfirmed: Int
-    let NewDeaths: Int
-    let TotalDeaths: Int
-}
+//struct CountryData: Codable {
+//    let Country: String
+//    let CountryCode: String
+//    let NewConfirmed: Int
+//    let TotalConfirmed: Int
+//    let NewDeaths: Int
+//    let TotalDeaths: Int
+//}
